@@ -182,7 +182,7 @@ func (p *Prometheus) collect(hCh chan *decoder.HEP) {
 			if !p.TargetEmpty {
 				for k, tn := range p.TargetName {
 					if pkt.SrcIP == p.TargetIP[k] || pkt.DstIP == p.TargetIP[k] {
-						p.CounterVecMetrics["heplify_method_response"].WithLabelValues(tn, pkt.SIP.StartLine.Method, pkt.SIP.CseqMethod).Inc()
+						p.CounterVecMetrics["heplify_method_response"].WithLabelValues(tn, pkt.SIP.StartLine.Method, pkt.SIP.CseqMethod).Set(1)
 
 						if pkt.SIP.RTPStatVal != "" {
 							p.dissectXRTPStats(tn, pkt.SIP.RTPStatVal)
@@ -199,7 +199,7 @@ func (p *Prometheus) collect(hCh chan *decoder.HEP) {
 					logp.Warn("%v", err)
 				}
 
-				p.CounterVecMetrics["heplify_method_response"].WithLabelValues("", pkt.SIP.StartLine.Method, pkt.SIP.CseqMethod).Inc()
+				p.CounterVecMetrics["heplify_method_response"].WithLabelValues("", pkt.SIP.StartLine.Method, pkt.SIP.CseqMethod).Set(1)
 
 				if pkt.SIP.RTPStatVal != "" {
 					p.dissectXRTPStats("", pkt.SIP.RTPStatVal)
